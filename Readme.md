@@ -71,3 +71,8 @@ bench:	        Benchmark the code.
 prof:           Run the profiler.
 prof_svg:       Run the profiler and generate image.
 ```
+
+Run:
+---
+
+`make gowindow && ./gowindow -filePath test_data.txt`
