@@ -48,15 +48,15 @@ release:
 	make crossbuild GOOS=linux GOARCH=386
 	make crossbuild GOOS=darwin GOARCH=amd64
 
-bench:	## Benchmark the code.
+bench:	       ## Benchmark the code.
 bench:
 	@go test -cpuprofile cpu.prof -memprofile mem.prof -bench .
 
-prof:   ## Run the profiler.
+prof:          ## Run the profiler.
 prof:	bench
 	@go tool pprof cpu.prof
 
-prof_svg:   ## Run the profiler and generate image.
+prof_svg:      ## Run the profiler and generate image.
 prof_svg:	clean	bench
 	@echo "Do you have graphviz installed? sudo apt-get install graphviz."
 	@go tool pprof -svg gowindow.test cpu.prof > cpu.svg
