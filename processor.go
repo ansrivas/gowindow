@@ -26,6 +26,9 @@ func inputParser(line string) (InputRecord, error) {
 	var inpRec InputRecord
 
 	record := strings.Fields(line)
+	if len(record) < 2 {
+		return inpRec, fmt.Errorf("Unable to parse: %s", line)
+	}
 	ts, err1 := strconv.Atoi(record[0])
 	pr, err2 := strconv.ParseFloat(record[1], 64)
 
@@ -56,6 +59,5 @@ func processFile(filePath string, output chan<- InputRecord) {
 			continue
 		}
 		output <- record
-		//TODO: Call update on each line read.
 	}
 }
