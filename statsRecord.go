@@ -48,7 +48,7 @@ func (st *StatsRecord) filter(input InputRecord) {
 	}
 
 	//===============================================
-	st.window = make([]InputRecord, len(tempSlice))
+	st.window = tempSlice[:]
 	st.sum = 0
 	if len(tempSlice) == 0 {
 		st.min = math.MaxFloat64
@@ -65,7 +65,7 @@ func (st *StatsRecord) filter(input InputRecord) {
 		if v.priceRatio > st.max {
 			st.max = v.priceRatio
 		}
-		st.sum += v.priceRatio
+		st.sum = st.sum + v.priceRatio
 		st.window[idx] = v
 	}
 	//===============================================

@@ -7,6 +7,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 // InputRecord ...
@@ -23,24 +24,20 @@ func init() {
 
 func inputParser(line string) (InputRecord, error) {
 	var inpRec InputRecord
-	if re.MatchString(line) {
 
-		record := re.FindStringSubmatch(line)
+	record := strings.Fields(line)
+	ts, err1 := strconv.Atoi(record[0])
+	pr, err2 := strconv.ParseFloat(record[1], 64)
 
-		ts, err1 := strconv.Atoi(record[1])
-		pr, err2 := strconv.ParseFloat(record[3], 64)
-
-		if (err1 != nil) || (err2 != nil) {
-			return inpRec, fmt.Errorf("Unable to parse: %s", line)
-		}
-
-		return InputRecord{
-			timestamp:  ts,
-			priceRatio: pr,
-		}, nil
-
+	if (err1 != nil) || (err2 != nil) {
+		return inpRec, fmt.Errorf("Unable to parse: %s", line)
 	}
-	return inpRec, fmt.Errorf("Unable to parse: %s", line)
+
+	return InputRecord{
+		timestamp:  ts,
+		priceRatio: pr,
+	}, nil
+
 }
 
 func processFile(filePath string, output chan<- InputRecord) {
