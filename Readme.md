@@ -56,3 +56,18 @@ Expected output data:
 1355271562 1.80275 2 3.6054  1.80265 1.80275
 1355271588 1.80295 2 3.6057  1.80275 1.80295
 ```
+
+Usage:
+---
+
+```
+$ make
+help:           Show available options with this Makefile
+test:           Run all the tests
+dep:            Get all the dependencies
+clean:          Clean the application and remove all the docker containers.
+release:        Create a release build.
+bench:	        Benchmark the code.
+prof:           Run the profiler.
+prof_svg:       Run the profiler and generate image.
+```
