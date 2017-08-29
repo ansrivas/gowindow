@@ -50,6 +50,9 @@ func (st *StatsRecord) filter(input InputRecord) {
 	//===============================================
 	st.window = tempSlice[:]
 	st.sum = 0
+	st.count = len(tempSlice)
+	st.priceRatio = tempSlice[len(tempSlice)-1].priceRatio
+	st.timestamp = tempSlice[len(tempSlice)-1].timestamp
 	if len(tempSlice) == 0 {
 		st.min = math.MaxFloat64
 		st.max = math.SmallestNonzeroFloat64
@@ -58,15 +61,16 @@ func (st *StatsRecord) filter(input InputRecord) {
 		st.max = tempSlice[0].priceRatio
 	}
 	//================================================
-	for idx, v := range tempSlice {
-		if v.priceRatio < st.min {
-			st.min = v.priceRatio
+
+	for i := 0; i < len(tempSlice); i++ {
+		v := tempSlice[i].priceRatio
+		if v < st.min {
+			st.min = v
+		} else if v > st.max {
+			st.max = v
 		}
-		if v.priceRatio > st.max {
-			st.max = v.priceRatio
-		}
-		st.sum = st.sum + v.priceRatio
-		st.window[idx] = v
+		st.sum = st.sum + v
+		st.window[i] = tempSlice[i]
 	}
 	//===============================================
 
@@ -74,6 +78,7 @@ func (st *StatsRecord) filter(input InputRecord) {
 
 // Update will append any new entry in the window and generate stats on it.
 func (st *StatsRecord) Update(ctx context.Context, input <-chan InputRecord, printStats bool) {
+
 	for {
 		select {
 		case record := <-input:
@@ -92,7 +97,7 @@ func (st *StatsRecord) Update(ctx context.Context, input <-chan InputRecord, pri
 func NewStatsRecord() *StatsRecord {
 
 	st := StatsRecord{windowLen: 60}
-	st.window = make([]InputRecord, 60)
+	st.window = make([]InputRecord, 0)
 	return &st
 }
 
