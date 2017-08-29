@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"bufio"
@@ -43,7 +43,8 @@ func inputParser(line string) (InputRecord, error) {
 
 }
 
-func processFile(filePath string, output chan<- InputRecord) {
+// ProcessFile ...
+func ProcessFile(filePath string, output chan<- InputRecord) {
 	fileHandle, err := os.Open(filePath)
 	defer fileHandle.Close()
 	if err != nil {
