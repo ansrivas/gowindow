@@ -58,7 +58,7 @@ func (st *StatsRecord) filter(input InputRecord) {
 
 	//================================================
 
-	for i := 0; i < len(st.window); i++ {
+	for i := 0; i < st.count; i++ {
 		v := st.window[i].priceRatio
 		if v < st.min {
 			st.min = v
