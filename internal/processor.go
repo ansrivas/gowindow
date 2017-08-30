@@ -44,7 +44,9 @@ func inputParser(line string) (InputRecord, error) {
 }
 
 // ProcessFile ...
-func ProcessFile(filePath string, output chan<- InputRecord) {
+func ProcessFile(filePath string, printStats bool) {
+	recordProcessor := NewStatsRecord()
+
 	fileHandle, err := os.Open(filePath)
 	defer fileHandle.Close()
 	if err != nil {
@@ -59,6 +61,7 @@ func ProcessFile(filePath string, output chan<- InputRecord) {
 			log.Printf("Unable to parse the given line: %s", line)
 			continue
 		}
-		output <- record
+
+		recordProcessor.Update(record, printStats)
 	}
 }
