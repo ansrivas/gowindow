@@ -3,7 +3,6 @@ package internal
 import (
 	"context"
 	"fmt"
-	"math"
 )
 
 // StatsRecord creates a bunch of stats for a given input window
@@ -50,27 +49,23 @@ func (st *StatsRecord) filter(input InputRecord) {
 	//===============================================
 	st.window = tempSlice[:]
 	st.sum = 0
-	st.count = len(tempSlice)
-	st.priceRatio = tempSlice[len(tempSlice)-1].priceRatio
-	st.timestamp = tempSlice[len(tempSlice)-1].timestamp
-	if len(tempSlice) == 0 {
-		st.min = math.MaxFloat64
-		st.max = math.SmallestNonzeroFloat64
-	} else {
-		st.min = tempSlice[0].priceRatio
-		st.max = tempSlice[0].priceRatio
-	}
+	st.count = len(st.window)
+	st.priceRatio = input.priceRatio
+	st.timestamp = input.timestamp
+
+	st.min = input.priceRatio
+	st.max = input.priceRatio
+
 	//================================================
 
-	for i := 0; i < len(tempSlice); i++ {
-		v := tempSlice[i].priceRatio
+	for i := 0; i < len(st.window); i++ {
+		v := st.window[i].priceRatio
 		if v < st.min {
 			st.min = v
 		} else if v > st.max {
 			st.max = v
 		}
 		st.sum = st.sum + v
-		st.window[i] = tempSlice[i]
 	}
 	//===============================================
 
