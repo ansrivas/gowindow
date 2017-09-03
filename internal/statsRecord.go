@@ -1,3 +1,25 @@
+// MIT License
+//
+// Copyright (c) 2017 Ankur Srivastava
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 package internal
 
 import (
@@ -17,14 +39,16 @@ type StatsRecord struct {
 	min float64
 	// Get sum of all the entries from the current window
 	sum float64
-	//
+	// timestamp represents the last timestamp in current window
 	timestamp int
-	//
+	// count represents the number of elements in current window
 	count int
-	//priceRatio
+	//priceRatio is the last record in the current window
 	priceRatio float64
 }
 
+// String converts a stats record in its formatted string representation
+// 1355270609    1.80215     1    1.80215    1.80215    1.80215
 func (st *StatsRecord) String() string {
 
 	return fmt.Sprintf("%10.10d %10.5f %5d %10.5f %10.5f %10.5f",
@@ -36,7 +60,8 @@ func (st *StatsRecord) String() string {
 		st.max)
 }
 
-// filter will filter out everything lesser than timestamp `ts`
+// filter will filter out everything lesser than timestamp `ts` and populate
+// the StatsRecord struct
 func (st *StatsRecord) filter(input InputRecord) {
 	//===============================================
 	tempSlice := st.window[:0]
@@ -88,7 +113,7 @@ func (st *StatsRecord) Update(ctx context.Context, input <-chan InputRecord, pri
 	}
 }
 
-// NewStatsRecord ...
+// NewStatsRecord creates a new StatsRecord object with default window length of 60
 func NewStatsRecord() *StatsRecord {
 
 	st := StatsRecord{windowLen: 60}
@@ -96,8 +121,9 @@ func NewStatsRecord() *StatsRecord {
 	return &st
 }
 
-// NewStatsRecordWithLen ...
+// NewStatsRecordWithLen creates a new StatsRecord object with default window length of windowLen
 func NewStatsRecordWithLen(windowLen int) *StatsRecord {
 	st := StatsRecord{windowLen: windowLen}
+	st.window = make([]InputRecord, 0)
 	return &st
 }
