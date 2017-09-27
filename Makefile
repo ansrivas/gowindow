@@ -50,7 +50,7 @@ release:
 
 bench:	       ## Benchmark the code.
 bench:
-	@go test -cpuprofile cpu.prof -memprofile mem.prof -bench .
+	@go test -o benchmark.test -cpuprofile cpu.prof -memprofile mem.prof -bench .
 
 prof:          ## Run the profiler.
 prof:	bench
@@ -59,4 +59,4 @@ prof:	bench
 prof_svg:      ## Run the profiler and generate image.
 prof_svg:	clean	bench
 	@echo "Do you have graphviz installed? sudo apt-get install graphviz."
-	@go tool pprof -svg gowindow.test cpu.prof > cpu.svg
+	@go tool pprof -svg benchmark.test cpu.prof > cpu.svg
