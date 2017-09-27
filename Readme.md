@@ -1,6 +1,7 @@
 About:
 ---
 
+[![Build Status](https://travis-ci.org/ansrivas/gowindow.svg?branch=master)](https://travis-ci.org/ansrivas/gowindow)
 
 Read a file from a given path and create a window of a given length on it.
 The data is in form of a timestamp->values.
