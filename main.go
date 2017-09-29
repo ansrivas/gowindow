@@ -41,8 +41,8 @@ func handleProcessing(filePath string, printStats bool) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	// Lets create an input channel, with some buffer
-	inputRecordChan := make(chan internal.InputRecord, 5)
+
+	inputRecordChan := make(chan internal.InputRecord)
 	if printStats {
 		internal.PrintHeader()
 	}
